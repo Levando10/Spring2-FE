@@ -161,6 +161,7 @@ const informationDetail = async () => {
 
 
     useEffect(() => {
+        document.title = 'Danh sách sản phẩm';
         const token = localStorage.getItem("authToken");
         const role = localStorage.getItem("role");
         setRole(role)

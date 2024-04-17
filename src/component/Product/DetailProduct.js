@@ -97,6 +97,7 @@ export default  function DetailProduct(){
 
 
     useEffect(() => {
+        document.title = 'Chi tiết sản phẩm';
         window.scrollTo(0, 0);
         const role = localStorage.getItem("role")
         setRole(role);

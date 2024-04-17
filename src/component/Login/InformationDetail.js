@@ -50,6 +50,7 @@ export default function InformationDetail(){
     }
 
     useEffect(() => {
+        document.title = 'Thông tin chi tiết';
         const isLogin = localStorage.getItem("isLogin");
         const role = localStorage.getItem("role")
         setRole(role);
@@ -248,24 +249,24 @@ export default function InformationDetail(){
                                     <div className="card-body">
                                         <div className="form-group">
                                             <label className="form-label">Tài khoản</label>
-                                            <input type="text" className="form-control mb-1" value={localStorage.getItem("nameAccount")}/>
+                                            <input disabled={true}  type="text" className="form-control mb-1" value={localStorage.getItem("nameAccount")}/>
                                         </div>
                                         <div className="form-group">
                                             <label className="form-label">Họ và tên</label>
-                                            <input type="text" className="form-control" value={localStorage.getItem("fullName")}/>
+                                            <input disabled={true}  type="text" className="form-control" value={localStorage.getItem("fullName")}/>
                                         </div>
                                         <div className="form-group">
                                             <label className="form-label">Email</label>
-                                            <input type="text" className="form-control" value={localStorage.getItem("email")}/>
+                                            <input disabled={true}  type="text" className="form-control" value={localStorage.getItem("email")}/>
                                         </div>
                                         <div className="form-group">
                                             <label className="form-label">Số điện thoại</label>
-                                            <input type="text" className="form-control" value={localStorage.getItem("phoneNumber")}/>
+                                            <input  disabled={true}  type="text" className="form-control" value={localStorage.getItem("phoneNumber")}/>
                                         </div>
 
                                         <div className="form-group">
                                             <label className="form-label">Địa chỉ</label>
-                                            <input type="text" className="form-control" value={localStorage.getItem("address")}/>
+                                            <input disabled={true} type="text" className="form-control" value={localStorage.getItem("address")}/>
                                         </div>
                                     </div>
 

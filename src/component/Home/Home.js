@@ -43,6 +43,9 @@ export default  function Home(){
     const handleViewProduct = async () => {
         navigate("/listProduct")
     }
+    const handleAdminManagement = async () => {
+        navigate("/statisticOrder")
+    }
 
     const handlePageClick = async (event) => {
         const pageNumber = event.selected;
@@ -147,6 +150,7 @@ const informationDetail = async () => {
     }
 
     useEffect(() => {
+        document.title = 'Trang chủ';
         const token = localStorage.getItem("authToken");
         const role = localStorage.getItem("role")
         setRole(role);
@@ -197,10 +201,23 @@ const informationDetail = async () => {
                 "warning"
             );
         }
+        const notRoleAccount = async  () => {
+            await SweetAlert(
+                "Bạn không có quyền truy cập!!!",
+                ``,
+                "warning"
+            );
+        }
         const notLogin = localStorage.getItem("notLogin")
+        const notRole = localStorage.getItem("notRole")
         if (notLogin === "OK"){
             localStorage.setItem("notLogin","NO");
             notLoginAccount();
+        }
+
+        if (notRole === "OK"){
+            localStorage.setItem("notRole","NO");
+            notRoleAccount();
         }
 
 
@@ -252,7 +269,7 @@ const informationDetail = async () => {
                                     </li>
                                     {
                                         role === "ADMIN" ? (<li className="nav-item">
-                                            <a className="nav-link">Quản lý</a>
+                                            <a className="nav-link" onClick={() => handleAdminManagement()}>Quản lý</a>
                                         </li>) : ""
                                     }
 

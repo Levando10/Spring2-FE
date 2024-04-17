@@ -227,6 +227,7 @@ const listError = check.dataRes;
         navigate("/listProduct")
     }
     useEffect(() => {
+        document.title = 'Đơn hàng';
         const isLogin = localStorage.getItem("isLogin");
         if (isLogin !== null){
 
@@ -319,7 +320,7 @@ const listError = check.dataRes;
                                     <tr className="table-head-row">
                                         <th className="product-remove"></th>
                                         <th className="product-image">Ảnh</th>
-                                        <th className="product-name">Thông tin sản phẩm</th>
+                                        <th className="product-name">Sản phẩm</th>
                                         <th className="product-price">Giá</th>
                                         <th className="product-quantity">Số lượng</th>
                                         <th className="product-total">Tổng cộng</th>
@@ -331,7 +332,7 @@ const listError = check.dataRes;
                                         <tr className="table-body-row">
                                             <td className="product-remove"><a onClick={() => handleDeleteProduct(`${item.idProduct}`)}><i className="far fa-window-close"></i></a></td>
 
-                                            <td style={{width: "20%", height: "20%"}}><img
+                                            <td style={{width: "10%", height: "10%"}}><img
                                                 src={item.imageMax}
                                                 alt=""/></td>
                                             <td className="product-name">{item.nameProduct}</td>
@@ -339,7 +340,7 @@ const listError = check.dataRes;
                                             <td className="product-quantity">
                                                 <button className={"btn-warning btn"} onClick={() => handleDecreaseQuantity(item.idProduct)}>-
                                                 </button>
-                                                <input type="number" value={item.quantity} placeholder="0"/>
+                                                <span style={{margin:"0 0.5vh"}}>{item.quantity}</span>
                                                 <button className={"btn btn-primary "} onClick={() => handleIncreaseQuantity(item.idProduct)}>+
                                                 </button>
                                             </td>

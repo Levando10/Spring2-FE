@@ -36,6 +36,7 @@ export default  function HistoryBooking(){
     }
 
     useEffect(() => {
+        document.title = 'Lịch sử đặt hàng';
         const isLogin = localStorage.getItem("isLogin");
         if (isLogin !== null){
 
@@ -139,9 +140,9 @@ export default  function HistoryBooking(){
           align-items: center;
         }
         .item-info img {
-          margin-right: 13px;
-          max-width: 50px; 
-          max-height: 50px;
+              margin-right: 13px;
+              max-width: 15vh;
+              max-height: 15vh;
         }
         .item-title h5 {
           margin: 0;

@@ -44,11 +44,17 @@ export default function Login(){
                 password: paramPassword
             }
             const req = await LoginService.loginAccount(params)
+            console.log(req)
             localStorage.setItem('authToken', req.token);
             localStorage.setItem('idAccount', req.dataRes.id);
             localStorage.setItem("isLogin",true);
             localStorage.setItem("nameAccount",req.dataRes.nameAccount);
             localStorage.setItem("role",req.dataRes.role.name)
+
+            localStorage.setItem("fullName",req.dataRes.fullName)
+            localStorage.setItem("email",req.dataRes.email)
+            localStorage.setItem("phoneNumber",req.dataRes.phoneNumber)
+            localStorage.setItem("address",req.dataRes.address)
 
             // Cookies.set('Token', req.token, { expires: 7 * 1000 * 60 ,httpOnly:true, secure: true, sameSite: 'strict' });
 

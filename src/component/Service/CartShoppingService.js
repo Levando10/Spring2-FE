@@ -103,6 +103,41 @@ const historyCartDetail = async (idUser, token,pages) => {
         throw error.response
     }
 }
+const managementHistoryCartByAdmin = async ( token,pages) => {
+    try {
+        return (await axios.get(`http://localhost:8080/admin/cart`, {
+            params: {
+                page: pages
+
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+
+        })).data
+    } catch (error) {
+
+        throw error.response
+    }
+}
+const searchOrderCartHistory = async ( pages,startDate,nameSearch,token) => {
+    try {
+        return (await axios.get(`http://localhost:8080/admin/searchCart`, {
+            params: {
+                page: pages,
+                searchDate:startDate,
+                searchName:nameSearch,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+
+        })).data
+    } catch (error) {
+
+        throw error.response
+    }
+}
 const detailBooking = async (idCart,token) => {
     try {
         return (await axios.get(`http://localhost:8080/cart/detailCartItem`, {
@@ -129,4 +164,6 @@ export const CartShoppingService = {
     decreaseProductInCart,
     historyCartDetail,
     detailBooking,
+    managementHistoryCartByAdmin,
+    searchOrderCartHistory
 }
