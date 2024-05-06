@@ -213,11 +213,7 @@ export default function AdminManagement(){
                     <div className="table-wrapper_movie">
                         <div className="table-title_movie">
                             <div className="row">
-                                {/* Col 9 */}
                                 <div className="col-12 col-sm-9 col-md-9 col-lg-9 col-xl-9" style={{height: "5.2rem"}}>
-
-
-
                                     <form className="form-group my-2 my-lg-0 p-0 m-0 ">
                                         <h5 style={{color: "white", paddingLeft: "15px"}}></h5>
                                         <div className="d-flex flex-wrap">

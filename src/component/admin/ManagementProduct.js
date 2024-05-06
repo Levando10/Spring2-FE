@@ -51,8 +51,8 @@ export default function ManagementProduct(){
 
     }
     useEffect(() => {
-        document.title = 'Quản lý sản phẩm';
-        const token = localStorage.getItem("authToken");
+            document.title = 'Quản lý sản phẩm';
+            const token = localStorage.getItem("authToken");
         const fetchData = async () => {
             try {
                 const listData = await AdminService.listProductManagement(0,token);

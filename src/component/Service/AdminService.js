@@ -18,6 +18,20 @@ const listProductManagement= async (pages,token) => {
         }
 }
 
+const listAccount = async (token) => {
+    try {
+        return (await axios.get(`http://localhost:8080/admin/listAccount`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+
+        })).data
+    } catch (error) {
+
+        throw error.response
+    }
+}
+
 const searchProductManagement = async ( pages,nameSearch,token) => {
     try {
         return (await axios.get(`http://localhost:8080/admin/searchProduct`, {
@@ -38,4 +52,5 @@ const searchProductManagement = async ( pages,nameSearch,token) => {
 export const AdminService = {
     listProductManagement,
     searchProductManagement,
+    listAccount
 }

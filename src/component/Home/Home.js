@@ -11,14 +11,22 @@ import Cookies from "js-cookie";
 import 'swiper/css';
 import 'swiper/css/effect-cube';
 import 'swiper/css/pagination';
-
 import '../Product/swiper.css';
+import { MdMessage } from 'react-icons/md';
+import SockJS from 'sockjs-client';
+import Stomp from "stompjs";
+import {ChatService, chatService} from "../Service/ChatService";
 
-
-import { EffectCube, Pagination } from 'swiper/modules';
+// var stompClient = null;
 
 
 export default  function Home(){
+
+    const [showChat, setShowChat] = useState(false);
+    const [message,setMessage] = useState("");
+    const [messages,setMessages] = useState([]);
+    const [stompClient, setStompClient] = useState(null);
+
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [listProduct,setListProduct] = useState([]);
@@ -27,7 +35,18 @@ export default  function Home(){
     const [qualityProduct,setQualityProduct] = useState(0);
     const [role,setRole] = useState("USER")
 
+    const [userData, setUserData] = useState({
+        idSender: localStorage.getItem("idAccount"),
+        receiver:"ADMIN",
+        content:"",
+        username: localStorage.getItem("nameAccount")
+    })
 
+
+
+    const handleCloseChat = () => {
+        setShowChat(false);
+    };
 
     const handleViewCart = async () => {
         const idAccount = localStorage.getItem("idAccount")
@@ -59,6 +78,7 @@ export default  function Home(){
     }
 
 const logout = async () => {
+    setShowChat(false);
     localStorage.clear();
 
     setIsLogin(false)
@@ -80,8 +100,6 @@ const informationDetail = async () => {
 
         try {
             const data = await ProductService.findProductById(idProduct);
-            console.log("da co data")
-            console.log(data)
             navigate("/detailProduct",{state:{
                     productDetail:data
                 }
@@ -102,7 +120,6 @@ const informationDetail = async () => {
 
     }
     const handleAddToCartInHome  = async  (idProduct) => {
-        console.log(idProduct)
         if (isLogin){
             try {
 
@@ -182,6 +199,12 @@ const informationDetail = async () => {
         if (isLogin){
             setIsLogin(true)
             qualityCart();
+
+
+            connectWebSocket();
+
+
+
         }
 
 
@@ -231,6 +254,70 @@ const informationDetail = async () => {
 
 
     }, []);
+    const connectWebSocket = async () => {
+        const socket = new SockJS('http://localhost:8080/ws');
+        const stomp = Stomp.over(socket);
+        stomp.connect({}, onConnected, onError);
+        setStompClient(stomp);
+    };
+    const onConnected = () => {
+        console.log('Connected to WebSocket');
+    };
+
+    const onError = (err) => {
+        console.log(err);
+    };
+
+    const handleMessageChange = (event) => {
+        setMessage(event.target.value)
+        const {value}=event.target;
+        setUserData({...userData,"content": value});
+    }
+
+    const handleMessageIconClick = async () => {
+        if (isLogin){
+            setShowChat(true);
+            const idAccount = localStorage.getItem("idAccount");
+            const token = localStorage.getItem("authToken");
+            const listMessageByUser = await ChatService.listMessage(idAccount,token);
+            setMessages(listMessageByUser);
+            stompClient.subscribe(`/user/${userData.idSender}/AdminPrivate`, onPrivateMessage);
+        } else {
+            await SweetAlert(
+                "Vui lòng đăng nhập",
+                `Trước khi nhắn tin`,
+                "error"
+            );
+            navigate("/login")
+        }
+
+    };
+    const onPrivateMessage = (message) => {
+        const newMessage = JSON.parse(message.body);
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+    };
+
+    const handleSendMessage = async () => {
+        if (stompClient && message.trim() !== '') {
+            stompClient.send("/app/chat", {}, JSON.stringify(userData));
+            setUserData({...userData,"content": ""});
+            setMessage("")
+
+            const idAccount = localStorage.getItem("idAccount");
+            const token = localStorage.getItem("authToken");
+            const listMessageByUser = await ChatService.listMessage(idAccount, token);
+            try {
+                const listMessageByUser = await ChatService.listMessage(idAccount, token);
+                setMessages(listMessageByUser);
+            } catch (error) {
+                console.error("Error fetching messages:", error);
+            }
+
+        }
+
+    }
+
+
 
     return(
         <>
@@ -292,12 +379,12 @@ const informationDetail = async () => {
 
                                 <div className="dropdown navbar-nav text-center ml-auto my-4">
                                     <a className="boxed-btn dropdown-toggle" type="button"
-                                            data-toggle="dropdown" aria-expanded="false">
+                                       data-toggle="dropdown" aria-expanded="false">
                                         {localStorage.getItem("nameAccount")}
                                     </a>
-                                    <div className="dropdown-menu" >
+                                    <div className="dropdown-menu">
                                         <a className="dropdown-item" onClick={informationDetail}>Thông tin cá nhân</a>
-                                        <a className="dropdown-item"  onClick={historyBooking}>Lịch sử mua hàng</a>
+                                        <a className="dropdown-item" onClick={historyBooking}>Lịch sử mua hàng</a>
                                         <a onClick={logout} className="dropdown-item" style={{
                                             marginTop: "0.5rem",
                                             cursor: 'pointer'
@@ -314,7 +401,7 @@ const informationDetail = async () => {
 
 
             <div className={"py-4"}>
-            <div className="hide-menubar" id="hide-navbar">
+                <div className="hide-menubar" id="hide-navbar">
                 </div>
             </div>
             <div className="background-container">
@@ -322,9 +409,9 @@ const informationDetail = async () => {
 
 
             <div className="search-area">
-            <div className="container">
+                <div className="container">
                     <div className="row">
-                    <div className="col-lg-12">
+                        <div className="col-lg-12">
                             <span className="close-btn"><i className="fas fa-window-close"></i></span>
                             <div className="search-bar">
                                 <div className="search-bar-tablecell">
@@ -405,7 +492,7 @@ const informationDetail = async () => {
                                                                                              src={item.imageProducts[0].urlImage}
 
 
-                                            alt="product"/></a>
+                                                                                             alt="product"/></a>
                                     </div>
                                     <h3>{item.name}</h3>
                                     <h5>{item.category.name}</h5>
@@ -450,6 +537,42 @@ const informationDetail = async () => {
 
                 </div>
             </div>
+            {role === "USER" || "null" && role !== "ADMIN" || isLogin === false ? <div className="chat-container">
+                {!showChat ? (
+                    <button className="message-icon-button" onClick={handleMessageIconClick}>
+
+                        <MdMessage size={32} color="blue"/>
+                    </button>
+                ) : (
+                    <div className="chat-box">
+                        <div className="chat-header">
+                            <strong>CGGLASSES</strong>
+                            <a className={"boxed-btn"} onClick={handleCloseChat}>Đóng</a>
+                        </div>
+                        <div className="chat-messages">
+                            {messages.map((item, index) => {
+                                const isUserMessage = item.sender.id === +localStorage.getItem("idAccount");
+                                return (
+                                    <div
+                                        className={`message-row ${isUserMessage ? 'message-row-right' : 'message-row-left'}`}
+                                        key={index}>
+                                        <div
+                                            className={`message-bubble ${isUserMessage ? 'message-sender' : 'message-receiver'}`}>
+                                            {item.content}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                        </div>
+                        <div className="chat-input">
+                            <input type="text" placeholder="Nhập tin nhắn..." value={message}
+                                   onChange={handleMessageChange}/>
+                            <button className={"btn btn-primary"} onClick={handleSendMessage}>Gửi</button>
+                        </div>
+                    </div>
+                )}
+            </div> : ""}
 
 
             <div className="abt-section mb-150">

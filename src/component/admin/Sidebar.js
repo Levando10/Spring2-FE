@@ -73,6 +73,12 @@ export function Sidebar() {
                             <span className="link_name">Quản lý sản phẩm</span>
                         </Link>
                     </li>
+                    <li className={window.location.pathname === "/managementMessage"  ? "activeCss" : ""}>
+                        <Link to={"/managementMessage"}>
+                            <i className='bx bx-video'></i>
+                            <span className="link_name">Quản lý tin nhắn</span>
+                        </Link>
+                    </li>
                     <li>
                         <div className="profile-details">
                             <div className="profile-content" style={{paddingLeft: "4rem"}}>

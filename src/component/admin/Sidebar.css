@@ -397,3 +397,76 @@ table.table-striped_movie.table-hover_movie tbody tr:hover {
     background-color: #4a4a4a;
     color: #ffffff;
 }
+
+
+
+/*mess admin*/
+.message-container {
+    display: flex;
+}
+
+/* Sidebar danh sách bạn bè */
+.sidebarAdmin {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.sidebarAdmin h2 {
+    margin-bottom: 10px;
+}
+
+.sidebarAdmin ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebarAdmin ul li {
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+.sidebarAdmin ul li:hover {
+    background-color: #e0e0e0;
+}
+
+/* Vùng chat */
+.chat {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.chat-header h2 {
+    margin-bottom: 10px;
+}
+
+.chat-messages {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.chat-form {
+    margin-top: 20px;
+    display: flex;
+}
+
+.chat-form input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.chat-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-form button:hover {
+    background-color: #0056b3;
+}
